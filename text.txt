@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>StreamLuxe.Store</title>
+
+<style>
+body{
+  margin:0;
+  font-family:Poppins, sans-serif;
+  background:#000;
+  color:#fff;
+  font-weight:600;
+}
+
+header{
+  padding:15px;
+  text-align:center;
+  font-size:20px;
+  font-weight:bold;
+  position:relative;
+}
+
+.logo-img{
+  width:50px;
+  height:50px;
+  object-fit:cover;
+  border-radius:50%;
+  position:absolute;
+  left:15px;
+  top:8px;
+}
+
+.brand{
+  display:inline-block;
+  background: linear-gradient(90deg,#ff4d4d,#fff,#ff4d4d,#fff);
+  background-size:300%;
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  font-weight:bold;
+  letter-spacing:1px;
+  animation:shine 4s linear infinite;
+  text-shadow:0 0 10px rgba(255,77,77,0.7);
+}
+
+@keyframes shine{
+  0%{background-position:0%;}
+  100%{background-position:300%;}
+}
+
+.rules-btn{
+  position:absolute;
+  right:15px;
+  top:10px;
+  padding:8px 12px;
+  border:none;
+  border-radius:8px;
+  background:#ff4d4d;
+  color:white;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+.section{
+  padding:20px;
+}
+
+.platform{
+  margin-bottom:40px;
+}
+
+.platform h2{
+  color:#ff4d4d;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:15px;
+}
+
+.card{
+  background:#0a0a0a;
+  border-radius:15px;
+  padding:15px;
+  border:1px solid #222;
+}
+
+.title{
+  color:#ff4d4d;
+  font-weight:bold;
+}
+
+.price{
+  font-size:24px;
+  margin:10px 0;
+  font-weight:bold;
+  color:#fff;
+}
+
+.buy-btn{
+  padding:10px;
+  background:#fff;
+  border:none;
+  border-radius:10px;
+  color:#000;
+  width:100%;
+  cursor:pointer;
+  font-weight:bold;
+  transition:0.3s;
+}
+
+.buy-btn:hover{
+  background:#e6e6e6;
+}
+
+.features{
+  margin-top:15px;
+  padding:15px;
+  background:#0d0d0d;
+  border-radius:12px;
+  font-size:14px;
+  line-height:1.6;
+  color:#ccc;
+}
+
+.features li{
+  margin-bottom:6px;
+}
+
+.popup{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,0.8);
+  display:none;
+  justify-content:center;
+  align-items:center;
+}
+
+.popup-box{
+  background:#111;
+  padding:20px;
+  border-radius:15px;
+  text-align:center;
+  width:90%;
+  max-width:300px;
+  max-height:80vh;
+  overflow-y:auto;
+}
+
+.popup button{
+  margin-top:10px;
+  padding:10px;
+  width:100%;
+  border:none;
+  border-radius:10px;
+  background:#ff4d4d;
+  color:white;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+.popup button:hover{
+  background:#e60000;
+}
+
+.popup-box img{
+  width:100%;
+  height:80px;
+  object-fit:cover;
+  border-radius:8px;
+  margin-bottom:10px;
+}
+</style>
+
+<script>
+let selectedPlan="";
+let selectedPrice="";
+
+function pay(plan,price){
+  selectedPlan=plan;
+  selectedPrice=price;
+
+  document.getElementById("planName").innerText=plan;
+  document.getElementById("planPrice").innerText=price;
+
+  document.getElementById("popup").style.display="flex";
+}
+
+function closePopup(){
+  document.getElementById("popup").style.display="none";
+}
+
+function openRules(){
+  document.getElementById("rulesPopup").style.display="flex";
+}
+
+function closeRules(){
+  document.getElementById("rulesPopup").style.display="none";
+}
+
+function openUPI(){
+  let upi="upi://pay?pa=8826210428@fam&pn=Daksh%20Sharma&am="+selectedPrice+"&cu=INR&tn="+encodeURIComponent(selectedPlan);
+
+  window.location.href = upi;
+
+  setTimeout(()=>{
+    let msg=encodeURIComponent(
+      "Hello, I have successfully completed the payment.\n\n"+
+      "Plan Purchased: "+selectedPlan+"\n"+
+      "Amount Paid: ₹"+selectedPrice+"\n\n"+
+      "Kindly activate my subscription at the earliest.\n"+
+      "I am attaching the payment screenshot for verification.\n\n"+
+      "Thank you."
+    );
+
+    window.location.href = "https://wa.me/918826210428?text="+msg;
+  },3000);
+}
+</script>
+
+</head>
+
+<body>
+
+<header>
+<img src="https://i.ibb.co/84QcJjYH/9-FFB71-E9-F29-D-4-CAD-B500-A3-DFB672-B6-F1.png" class="logo-img">
+<span class="brand">StreamLuxe.Store</span>
+<button class="rules-btn" onclick="openRules()">Rules</button>
+</header>
+
+<div class="section">
+<script>
+function platform(name,plans,features){
+document.write(`
+<div class="platform">
+<h2>${name}</h2>
+<div class="grid">
+${plans.map(p=>`
+<div class="card">
+<div class="title">${p.title}</div>
+<div class="price">₹${p.price}</div>
+<button class="buy-btn" onclick="pay('${name} ${p.title}',${p.price})">Buy Now</button>
+</div>
+`).join('')}
+</div>
+<ul class="features">
+${features.map(f=>`<li>• ${f}</li>`).join('')}
+</ul>
+</div>
+`);
+}
+
+platform("Netflix",[
+{title:"Monthly",price:159},
+{title:"3 months ",price:669},
+{title:"6 Months",price:999},
+{title:"Yearly",price:1999},
+],[
+"4K Ultra HD supported",
+"Single-Screen Access",
+"Offline Mode",
+"Activation time: 10 minutes to 24 hours",
+"24/7 customer support"
+]);
+
+platform("Prime Video",[
+{title:"Monthly",price:109},
+{title:"6 Months",price:329},
+{title:"Yearly",price:699},
+{title:"Yearly (On Your Number)",price:999},
+{title:"Lifetime",price:1799},
+{title:"6 Months On Number",price:649}
+],[
+"Monthly: 1 device (4K)",
+"Yearly: Up to 4 devices (4K)",
+"Yearly & 6 Months (On Your Number): 4K Ads-Free",
+"Lifetime: 24 months full 4K account",
+"Activation time: 10 minutes to 24 hours",
+"24/7 customer support"
+]);
+
+platform("JioHotstar",[
+{title:"Monthly",price:119},
+{title:"3 Months",price:269},
+{title:"6 Months",price:629},
+{title:"Yearly",price:999},
+{title:"Lifetime",price:1799}
+],[
+"Premium access",
+"Fast delivery",
+"Full support included",
+"Activation time: 10 minutes to 24 hours",
+"24/7 customer support"
+]);
+
+platform("SonyLiv",[
+{title:"Monthly",price:119},
+{title:"Monthly (On Your Number)",price:159},
+{title:"3 Months",price:269},
+{title:"6 Months",price:639},
+{title:"Yearly",price:699},
+{title:"Yearly (On Your Number)",price:999}
+],[
+"4K plan available",
+"Login on up to 5 devices",
+"Activation time: 10 minutes to 24 hours",
+"24/7 customer support"
+]);
+
+platform("Zee5",[
+{title:"Monthly",price:99},
+{title:"3 Months",price:229},
+{title:"6 Months",price:499},
+{title:"Yearly",price:649},
+{title:"Yearly (On Your Number)",price:999}
+],[
+"Premium access",
+"Smooth streaming experience",
+"Activation time: 10 minutes to 24 hours",
+"24/7 customer support"
+]);
+
+platform("Spotify",[
+{title:"Monthly",price:109},
+{title:"3 Months",price:279},
+{title:"6 Months",price:549},
+{title:"Yearly",price:1449}
+],[
+"No ads experience",
+"Offline mode available",
+"High-quality streaming",
+"Activation time: 10 minutes to 24 hours",
+"24/7 customer support"
+]);
+
+platform("YouTube",[
+{title:"Monthly",price:99},
+{title:"3 Months",price:399},
+{title:"6 Months",price:649},
+{title:"Yearly",price:1299},
+{title:"Family Yearly",price:1899}
+],[
+"No ads experience",
+"Background play enabled",
+"Instant mail activation",
+"One-time plans are non-renewable",
+"Family yearly includes 5 member slots",
+"Activation time: 10 minutes to 24 hours",
+"24/7 customer support"
+]);
+
+platform("ChatGPT Plus",[
+{title:"Monthly",price:1499},
+{title:"Yearly",price:8499}
+],[
+"Agent mode & faster response speeds",
+"Deep research tools included",
+"Activation time: 10 minutes to 24 hours",
+"24/7 customer support"
+]);
+
+platform("Google AI Pro + 2TB Cloud Storage",[
+{title:"Monthly",price:1499},
+{title:"Yearly",price:8499}
+],[
+"Nano Banana Pro with Veo 3.1 Fast video generation",
+"1,000 monthly AI credits",
+"Delivered directly to your mail",
+"NotebookLM & Google Antigravity access",
+"2TB cloud storage for Photos, Drive & Gmail",
+"Activation time: 10 minutes to 24 hours",
+"24/7 customer support"
+]);
+</script>
+</div>
+
+<!-- PAYMENT POPUP -->
+<div id="popup" class="popup">
+<div class="popup-box">
+<h3>Complete Payment</h3>
+<p><b>Plan:</b> <span id="planName"></span></p>
+<p><b>Amount:</b> ₹<span id="planPrice"></span></p>
+<button onclick="openUPI()">📲 Pay Now</button>
+<button onclick="closePopup()">❌ Close</button>
+</div>
+</div>
+
+<!-- RULES POPUP -->
+<div id="rulesPopup" class="popup">
+<div class="popup-box">
+<h3>Rules</h3>
+<ul style="text-align:left;font-size:14px;color:#ccc;line-height:2;padding-left:10px;list-style:none;">
+<li>1. First payment and after activation</li>
+<li>2. After payment, send screenshot on WhatsApp then your activation process will start</li>
+<li>3. Replacement policy: Within 7 days replacement available. After 7 days no replacement</li>
+<li>4. If your desired plan is not listed, contact on WhatsApp</li>
+<li>5. No scam / fake payment otherwise you will be blocked</li>
+</ul>
+<hr style="margin:15px 0;border-color:#333;">
+<h4>⭐ 100+ Happy Customers</h4>
+<p style="font-size:13px;color:#bbb;line-height:1.6;">
+✔ Fast activation within 10 minutes to 24 hours<br>
+✔ Trusted by 100+ satisfied customers<br>
+✔ Instant support on WhatsApp<br>
+✔ Smooth & secure service experience<br>
+</p>
+<h4>📸 Proof</h4>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px;">
+<img src="https://i.ibb.co/wr05ByfZ/IMG-1922.jpg">
+<img src="https://i.ibb.co/NgNJDkQg/IMG-1921.jpg">
+<img src="https://i.ibb.co/93kqKcQk/IMG-1920.jpg">
+<img src="https://i.ibb.co/nW21DJv/IMG-1919.jpg">
+<img src="https://i.ibb.co/cctNv29t/IMG-1918.jpg">
+<img src="https://i.ibb.co/Jj89GYLJ/IMG-1490.jpg">
+<img src="https://i.ibb.co/QFZN0S4S/IMG-1495.jpg">
+</div>
+<button onclick="closeRules()">❌ Close</button>
+</div>
+</div>
+
+<footer style="text-align:center;padding:20px;">
+
+<button onclick="window.location.href='https://wa.me/918826210428'"
+style="padding:10px 18px;border:none;border-radius:10px;background:#25D366;color:white;font-size:16px;cursor:pointer;font-weight:bold;">
+📲 Contact on WhatsApp and Email<br>
+24/7
+</button>
+
+<br><br>
+
+<p style="font-size:15px;color:#fff;margin-top:5px;"> 
+📧 <a href="mailto:streamluxe.store@gmail.com" style="color:#fff;text-decoration:none;font-weight:bold;">
+streamluxe.store@gmail.com
+</a>
+</p>
+
+<p style="margin-top:15px;font-size:14px;color:#aaa;">
+📸✨ Follow us on Instagram: 
+<a href="https://instagram.com/streamluxe.store" target="_blank" 
+style="color:#ff4d4d;text-decoration:none;font-weight:bold;">
+@streamluxe.store
+</a>
+</p>
+<br>
+© 2026 StreamLuxe.Store
+</footer>
+
+</body>
+</html>
