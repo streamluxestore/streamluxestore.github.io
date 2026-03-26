@@ -209,21 +209,20 @@ function openUPI(){
   window.location.href = upi;
 
   setTimeout(()=>{
-    let msg=encodeURIComponent(
-      "Hello, I have successfully completed the payment.\n\n"+
-      "Plan Purchased: "+selectedPlan+"\n"+
-      "Amount Paid: ₹"+selectedPrice+"\n\n"+
-      "Kindly activate my subscription at the earliest.\n"+
-      "I am attaching the payment screenshot for verification.\n\n"+
-      "Thank you."
-    );
+    function openWhatsApp(){
+  let msg = encodeURIComponent(
+    "Hello, I have successfully completed the payment.\n\n"+
+    "Plan Purchased: "+selectedPlan+"\n"+
+    "Amount Paid: ₹"+selectedPrice+"\n\n"+
+    "Kindly activate my subscription at the earliest.\n"+
+    "I am attaching the payment screenshot for verification.\n\n"+
+    "Thank you."
+  );
 
-    // 👇 Direct WhatsApp open (NO ugly page)
-    window.location.href = "whatsapp://send?phone=918826210428&text=" + msg;
+  window.location.href = "whatsapp://send?phone=918826210428&text=" + msg;
+}
 
-  },3000);
-}
-}
+
 </script>
 
 </head>
