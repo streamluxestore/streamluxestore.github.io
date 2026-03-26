@@ -177,7 +177,16 @@ header{
 }
 </style>
 
-<script>
+
+  <script>
+
+// 🔥 WhatsApp back page fix (VERY IMPORTANT)
+window.onpageshow = function(event) {
+  if (event.persisted) {
+    window.location.reload();
+  }
+};
+
 let selectedPlan="";
 let selectedPrice="";
 
