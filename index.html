@@ -218,8 +218,11 @@ function openUPI(){
       "Thank you."
     );
 
-    window.location.href = "https://wa.me/918826210428?text="+msg;
+    // 👇 Direct WhatsApp open (NO ugly page)
+    window.location.href = "whatsapp://send?phone=918826210428&text=" + msg;
+
   },3000);
+}
 }
 </script>
 
@@ -386,6 +389,7 @@ platform("Google AI Pro + 2TB Cloud Storage",[
 <p><b>Plan:</b> <span id="planName"></span></p>
 <p><b>Amount:</b> ₹<span id="planPrice"></span></p>
 <button onclick="openUPI()">📲 Pay Now</button>
+<button onclick="openWhatsApp()">✅ I have Paid</button>
 <button onclick="closePopup()">❌ Close</button>
 </div>
 </div>
