@@ -207,9 +207,10 @@ function openUPI(){
   let upi="upi://pay?pa=8826210428@fam&pn=Daksh%20Sharma&am="+selectedPrice+"&cu=INR&tn="+encodeURIComponent(selectedPlan);
 
   window.location.href = upi;
+}
 
-  setTimeout(()=>{
-    function openWhatsApp(){
+// ✅ Yeh alag hona chahiye (IMPORTANT)
+function openWhatsApp(){
   let msg = encodeURIComponent(
     "Hello, I have successfully completed the payment.\n\n"+
     "Plan Purchased: "+selectedPlan+"\n"+
@@ -221,8 +222,6 @@ function openUPI(){
 
   window.location.href = "whatsapp://send?phone=918826210428&text=" + msg;
 }
-
-
 </script>
 
 </head>
