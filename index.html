@@ -211,6 +211,8 @@ function openUPI(){
 
 // ✅ Yeh alag hona chahiye (IMPORTANT)
 function openWhatsApp(){
+  closePopup(); // popup band hoga
+
   let msg = encodeURIComponent(
     "Hello, I have successfully completed the payment.\n\n"+
     "Plan Purchased: "+selectedPlan+"\n"+
@@ -220,13 +222,14 @@ function openWhatsApp(){
     "Thank you."
   );
 
-  // Try WhatsApp app
-  window.location.href = "whatsapp://send?phone=918826210428&text=" + msg;
+  let appUrl = "whatsapp://send?phone=918826210428&text=" + msg;
+  let webUrl = "https://wa.me/918826210428?text=" + msg;
 
-  // Fallback (agar app na khule)
+  window.location.href = appUrl;
+
   setTimeout(()=>{
-    window.location.href = "https://wa.me/918826210428?text=" + msg;
-  },2000);
+    window.location.href = webUrl;
+  },1500);
 }
 </script>
 
