@@ -220,7 +220,13 @@ function openWhatsApp(){
     "Thank you."
   );
 
+  // Try WhatsApp app
   window.location.href = "whatsapp://send?phone=918826210428&text=" + msg;
+
+  // Fallback (agar app na khule)
+  setTimeout(()=>{
+    window.location.href = "https://wa.me/918826210428?text=" + msg;
+  },2000);
 }
 </script>
 
